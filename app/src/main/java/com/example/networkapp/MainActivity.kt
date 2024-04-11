@@ -1,5 +1,6 @@
 package com.example.networkapp
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -14,6 +15,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
+import java.lang.Exception
 
 // TODO (1: Fix any bugs)
 // TODO (2: Add function saveComic(...) to save and load comic info automatically when app starts)
@@ -57,7 +59,18 @@ class MainActivity : AppCompatActivity() {
         titleTextView.text = comicObject.getString("title")
         descriptionTextView.text = comicObject.getString("alt")
         Picasso.get().load(comicObject.getString("img")).into(comicImageView)
+        saveComic(comicObject)
     }
 
+    private fun saveComic(comicObject: JSONObject){
+        try {
+            val fileName = "comic.txt"
+            val fileOutputStream = openFileOutput(fileName, Context.MODE_PRIVATE)
+            fileOutputStream.write(comicObject.toString().toByteArray())
+            fileOutputStream.close()
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
 
 }
